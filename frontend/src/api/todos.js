@@ -5,7 +5,21 @@ const api = axios.create({
   baseURL: 'http://localhost:3000/api/todos'
 });
 
-export const fetchTodos = () => api.get('/').then(res => res.data);
+export const fetchTodos = async (filter) => {
+    const params = {};
+
+    if (filter === "done") {
+        params.done = true;
+    }
+
+    if (filter === "active") {
+        params.done = false;
+    }
+
+    const response = await api.get("/", { params });
+
+    return response.data;
+};
 
 export const createTodo = (title) =>
   api.post('/', { title }).then(res => res.data);
